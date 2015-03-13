@@ -1,0 +1,66 @@
+private function transformSudoku(type:String = 'horizontal'):void
+{
+	var i:uint = 0, tmp, tmpIx, mod9, div9;
+	switch(type) {
+		case 'vertical':
+			for(i = 0; i < 81; i++) {
+				//
+				// If column (i % 9) < 4 swap it:
+				//
+				if(i % 9 < 4) {
+					tmp = currentSolution[i];
+					div9 = Math.floor(i / 9);
+					tmpIx = (9 * div9 + 8) - (i - (9 * div9));
+					currentSolution[i] = currentSolution[tmpIx];
+					currentSolution[tmpIx] = tmp;
+				}
+			}					
+			break;			
+		case 'mainDiagonal':
+			for(i = 0; i < 81; i++) {
+				//
+				// Upper Main diagonal: row + column < 8
+				//
+				if((Math.floor(i / 9) + i % 9) < 8) {
+					mod9 = Math.floor(i % 9);
+					div9 = Math.floor(i / 9);							
+					tmp = currentSolution[i];
+					tmpIx = (8 - mod9) * 9 + 8 - div9;
+					currentSolution[i] = currentSolution[tmpIx];
+					currentSolution[tmpIx] = tmp;
+				}
+			}
+			break;			
+		case 'minorDiagonal':
+			for(i = 0; i < 81; i++) {
+				//
+				// Upper Minor diagonal: row > column
+				//
+				if(Math.floor(i / 9) > i % 9) {
+					mod9 = Math.floor(i % 9);
+					div9 = Math.floor(i / 9);							
+					tmp = currentSolution[i];
+					tmpIx = div9 + mod9 * 9;
+					currentSolution[i] = currentSolution[tmpIx];
+					currentSolution[tmpIx] = tmp;
+				}
+			}
+			break;		
+		case 'horizontal':
+		default:
+			for(i = 0; i < 81; i++) {
+				//
+				// Row < 4
+				//
+				if(Math.floor(i / 9) < 4) {
+					mod9 = Math.floor(i % 9);
+					div9 = Math.floor(i / 9);							
+					tmp = currentSolution[i];
+					tmpIx = mod9 + (8 - div9) * 9;
+					currentSolution[i] = currentSolution[tmpIx];
+					currentSolution[tmpIx] = tmp;
+				}
+			}
+			break;
+	}
+}
